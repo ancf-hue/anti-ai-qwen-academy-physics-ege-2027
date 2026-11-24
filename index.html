@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Анти-ИИ Квен Академия | Физика ЕГЭ-2027</title>
+  <meta name="description" content="Бесплатный офлайн-тренажёр и чек-лист для подготовки к ЕГЭ по физике 2027 по проекту демоверсии, кодификатора и спецификации ФИПИ: 26 заданий, 45 первичных баллов, критерии части 2, план на 25 дней." />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #070b18;
+      --card: rgba(18, 26, 51, 0.72);
+      --card-soft: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #e8ecff;
+      --muted: #9aa4c8;
+      --accent: #22d3ee;
+      --violet: #7c3aed;
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #f59e0b;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 11, 24, 0.82);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 0; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo {
+      width: 46px; height: 46px; border-radius: 15px; object-fit: cover;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+      flex: 0 0 auto;
+    }
+    .brand strong { display: block; font-size: 16px; line-height: 1.2; }
+    .brand small { color: var(--muted); font-size: 12px; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; }
+    nav a { color: #cfd6ff; text-decoration: none; font-weight: 700; font-size: 14px; }
+    nav a:hover { color: white; }
+    .top-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-left: auto; }
+    .timer-widget {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 6px 8px;
+    }
+    .timer-widget select {
+      background: rgba(7, 11, 24, 0.55); color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px; padding: 6px 8px; font: inherit;
+      font-size: 12px; max-width: 190px;
+    }
+    #timerDisplay {
+      font-variant-numeric: tabular-nums; font-weight: 900;
+      min-width: 88px; text-align: center; color: white;
+    }
+    .timer-btn {
+      border: 0; background: rgba(255, 255, 255, 0.08); color: var(--text);
+      border-radius: 10px; padding: 6px 9px; cursor: pointer;
+      font-size: 14px; transition: 0.15s ease;
+    }
+    .timer-btn:hover { background: rgba(255, 255, 255, 0.14); }
+    .timer-widget.warning #timerDisplay { color: var(--orange); }
+    .timer-widget.danger #timerDisplay { color: var(--red); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+    .hero {
+      display: grid; grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px; padding: 48px 0 28px; align-items: start;
+    }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(124, 58, 237, 0.18);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      color: #d8ccff; font-size: 13px; font-weight: 700;
+    }
+    h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; margin: 16px 0; }
+    h1 .accent { color: var(--accent); }
+    .lead { color: #b8c1e6; max-width: 72ch; font-size: 17px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .btn {
+      border: 0; border-radius: 14px; padding: 14px 18px;
+      font-weight: 850; cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      background: linear-gradient(135deg, var(--violet), var(--accent));
+      color: white; box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+      font-size: 15px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #eaf0ff; box-shadow: none;
+    }
+    .btn.small { padding: 10px 14px; font-size: 14px; border-radius: 12px; }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(124, 58, 237, 0.16), rgba(6, 182, 212, 0.10));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px; padding: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    .panel h3 { margin: 0 0 14px; font-size: 20px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+    .metric {
+      background: rgba(7, 11, 24, 0.35); border-radius: 16px;
+      padding: 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 82px;
+    }
+    .metric strong { display: block; font-size: 22px; color: white; margin-bottom: 4px; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    progress {
+      width: 100%; height: 10px; border-radius: 999px;
+      overflow: hidden; appearance: none;
+      background: rgba(255, 255, 255, 0.1); border: none; margin-top: 10px;
+    }
+    progress::-webkit-progress-bar { background: rgba(255, 255, 255, 0.1); border-radius: 999px; }
+    progress::-webkit-progress-value { background: linear-gradient(90deg, var(--violet), var(--accent)); border-radius: 999px; }
+    progress::-moz-progress-bar { background: var(--accent); border-radius: 999px; }
+    .note { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
+    section { padding: 28px 0; }
+    .section-head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 16px; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    h2 { font-size: clamp(26px, 3vw, 36px); margin: 0; line-height: 1.15; }
+    .sub { color: var(--muted); margin: 6px 0 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 22px; padding: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    }
+    .card h3 { margin: 0 0 10px; font-size: 20px; }
+    .card p { color: #b8c1e6; margin: 0 0 16px; }
+    .warn-card { border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(180deg, rgba(245, 158, 11, 0.10), rgba(18, 26, 51, 0.72)); }
+    .danger-card { border-color: rgba(239, 68, 68, 0.35); background: linear-gradient(180deg, rgba(239, 68, 68, 0.10), rgba(18, 26, 51, 0.72)); }
+    .success-card { border-color: rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(34, 197, 94, 0.10), rgba(18, 26, 51, 0.72)); }
+    .tag {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 850; margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #dbe3ff;
+    }
+    .tag.red { background: rgba(239, 68, 68, 0.14); border-color: rgba(239, 68, 68, 0.35); color: #ffd7d7; }
+    .tag.green { background: rgba(34, 197, 94, 0.14); border-color: rgba(34, 197, 94, 0.35); color: #d7ffe6; }
+    .tag.orange { background: rgba(245, 158, 11, 0.14); border-color: rgba(245, 158, 11, 0.35); color: #fff0cc; }
+    .mini-list { margin: 0; padding-left: 18px; color: #c8d2f5; }
+    .mini-list li { margin: 7px 0; }
+
+    .question-block {
+      background: var(--card); border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px; padding: 24px; margin-bottom: 26px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+    .q-number {
+      display: inline-block; padding: 6px 12px; border-radius: 999px;
+      background: rgba(124, 58, 237, 0.22);
+      border: 1px solid rgba(124, 58, 237, 0.45);
+      color: #d8ccff; font-size: 13px; font-weight: 850; margin-bottom: 14px;
+    }
+    .q-part { margin-bottom: 18px; }
+    .q-part-label {
+      display: inline-block; font-size: 12px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .q-text {
+      font-size: 17px; font-weight: 700; margin: 0;
+      line-height: 1.5; color: #eaf0ff; white-space: pre-wrap;
+    }
+    .q-info {
+      background: rgba(124, 58, 237, 0.10);
+      border-left: 4px solid var(--violet);
+      border-radius: 0 14px 14px 0;
+      padding: 16px 18px; margin: 18px 0;
+      color: #dbe3ff; font-size: 15px; line-height: 1.55; white-space: pre-wrap;
+    }
+    .q-info strong { color: #ffffff; }
+    .q-trainer-label {
+      display: inline-block; font-size: 12px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--green); margin-bottom: 10px;
+    }
+    .answer-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .answer-input {
+      flex: 1; min-width: 220px;
+      background: rgba(7, 11, 24, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text); border-radius: 14px;
+      padding: 14px 16px; font: inherit; font-size: 16px;
+    }
+    .answer-input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+    }
+    .answer-input.correct { border-color: rgba(34, 197, 94, 0.65); background: rgba(34, 197, 94, 0.12); }
+    .answer-input.wrong { border-color: rgba(239, 68, 68, 0.65); background: rgba(239, 68, 68, 0.12); }
+    .options { display: grid; gap: 10px; }
+    .option {
+      text-align: left; width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text); border-radius: 14px;
+      padding: 14px 16px; cursor: pointer; font-size: 15px;
+      transition: 0.15s ease; white-space: pre-wrap;
+    }
+    .option:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); }
+    .option.selected { background: rgba(34, 211, 238, 0.16); border-color: rgba(34, 211, 238, 0.55); }
+    .option:disabled { cursor: default; }
+    .result-block { margin-top: 14px; padding: 14px 16px; border-radius: 14px; }
+    .result-block.correct { background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); }
+    .result-block.wrong { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); }
+    .result-block.neutral { background: rgba(34, 211, 238, 0.12); border: 1px solid rgba(34, 211, 238, 0.35); }
+    .verdict { font-size: 17px; font-weight: 900; margin-bottom: 8px; }
+    .verdict.correct { color: #22c55e; }
+    .verdict.wrong { color: #ef4444; }
+    .verdict.neutral { color: var(--accent); }
+    .result-row { margin: 6px 0; color: #d7e6ff; font-size: 15px; }
+    .result-row strong { color: #ffffff; }
+    .source-row {
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.18);
+      color: var(--muted); font-size: 13px;
+    }
+    .source-row strong { color: #dbe3ff; }
+    .summary {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(18, 26, 51, 0.72));
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 24px; padding: 24px; text-align: center; margin-top: 24px;
+    }
+    .summary .score { font-size: 48px; font-weight: 950; color: #fff; }
+    .reset-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; justify-content: flex-end; }
+
+    .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .check-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--card-soft); border: 1px solid var(--border);
+      border-radius: 16px; padding: 14px; transition: 0.15s ease;
+    }
+    .check-item input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--accent); flex: 0 0 auto; }
+    .check-item label { cursor: pointer; color: #dbe3ff; }
+    .check-item.done { opacity: 0.72; background: rgba(34, 211, 238, 0.08); border-color: rgba(34, 211, 238, 0.25); }
+    .check-item.done label { text-decoration: line-through; color: #aab5dc; }
+
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .day {
+      background: var(--card-soft); border: 1px solid var(--border);
+      border-radius: 18px; padding: 16px; min-height: 112px;
+    }
+    .day b { display: block; color: var(--accent); margin-bottom: 6px; font-size: 14px; letter-spacing: 0.2px; }
+    .day.critical { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.08); }
+
+    .support-card {
+      background: linear-gradient(180deg, rgba(124, 58, 237, 0.18), rgba(34, 211, 238, 0.10));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px; padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    .support-card h2 { margin-bottom: 10px; }
+    .support-card p { margin: 10px 0; color: #dbe3ff; }
+    .phone { color: white; font-weight: 900; text-decoration: none; border-bottom: 1px dashed rgba(255, 255, 255, 0.45); }
+    .phone:hover { color: var(--accent); }
+    .copy-status { margin-left: 8px; color: var(--green); font-weight: 850; }
+    .support-card a { color: var(--accent); font-weight: 800; text-decoration: none; }
+    .support-card a:hover { text-decoration: underline; }
+
+    footer {
+      padding: 30px 0 50px; color: var(--muted);
+      text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 30px;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr; }
+      nav { gap: 12px; }
+      .top-controls { width: 100%; justify-content: space-between; }
+      .timer-widget select { max-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <img src="favicon.ico" class="brand-logo" alt="Anti-AI Qwen Academy Logo" onerror="this.style.display='none'" />
+        <div>
+          <strong>Анти-ИИ Квен Академия</strong>
+          <small>Физика ЕГЭ-2027 · 26 заданий · 45 баллов</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#structure">Структура</a>
+        <a href="#changes">Изменения 2027</a>
+        <a href="#criteria">Критерии</a>
+        <a href="#trainer">Тренажёр</a>
+        <a href="#checklist">Чек-лист</a>
+        <a href="#plan">25 дней</a>
+        <a href="#support">Поддержать</a>
+      </nav>
+
+      <div class="top-controls">
+        <div class="timer-widget" id="timerWidget" role="group" aria-label="Exam Timer">
+          <select id="timerPreset" aria-label="Timer Preset"></select>
+          <span id="timerDisplay">03:55:00</span>
+          <button id="timerToggle" class="timer-btn" type="button">▶</button>
+          <button id="timerReset" class="timer-btn" type="button">↺</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge">Проект ФИПИ 2027 · 26 заданий · 45 первичных баллов · 235 минут</span>
+        <h1>Поможем сдать <span class="accent">физику</span> правильно</h1>
+        <p class="lead">
+          Тренажёр составлен по проекту демоверсии, спецификации и кодификатора ЕГЭ-2027 по физике.
+          Часть 1 — 20 заданий с кратким ответом: 11 заданий с числовым ответом или двумя числами и 9 заданий на выбор/соответствие.
+          По баллам часть 1 даёт максимум 28 баллов: 12 заданий по 1 баллу и 8 заданий по 2 балла.
+          Часть 2 — 6 заданий с развёрнутым ответом, максимум 17 баллов.
+          Задания 21–26 проверяются экспертами по критериям; в тренажёре они доступны как честная самопроверка.
+        </p>
+
+        <div class="actions">
+          <button class="btn" onclick="scrollToId('trainer')">Пройти тренажёр</button>
+          <button class="btn secondary" onclick="scrollToId('structure')">Структура экзамена</button>
+          <button class="btn secondary" onclick="scrollToId('criteria')">Критерии части 2</button>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>Быстрая статистика</h3>
+
+        <div class="metrics">
+          <div class="metric">
+            <strong id="answeredCount">0/26</strong>
+            <span>блоков пройдено</span>
+          </div>
+          <div class="metric">
+            <strong id="correctCount">0/20</strong>
+            <span>верных в части 1</span>
+          </div>
+          <div class="metric">
+            <strong id="checklistProgress">0%</strong>
+            <span>чек-лист</span>
+          </div>
+        </div>
+
+        <progress id="overall" value="0" max="100"></progress>
+        <p class="note">Ответы и чек-лист сбрасываются при открытии страницы.</p>
+      </aside>
+    </section>
+
+    <section id="structure">
+      <div class="section-head">
+        <div>
+          <h2>Структура ЕГЭ по физике</h2>
+          <p class="sub">26 заданий: 20 с кратким ответом, 6 с развёрнутым. 45 первичных баллов, 235 минут.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card warn-card">
+          <span class="tag orange">Часть 1</span>
+          <h3>20 заданий с кратким ответом</h3>
+          <ul class="mini-list">
+            <li>11 заданий — ответ число или два числа, 9 заданий — выбор/соответствие.</li>
+            <li>Задания 1–4, 7, 8, 11–13, 16, 19, 20 — по 1 баллу.</li>
+            <li>Задания 5, 6, 9, 10, 14, 15, 17, 18 — по 2 балла.</li>
+            <li>Максимум за часть 1 — 28 баллов.</li>
+          </ul>
+        </div>
+
+        <div class="card warn-card">
+          <span class="tag orange">Часть 2</span>
+          <h3>6 заданий с развёрнутым ответом</h3>
+          <ul class="mini-list">
+            <li>Задание 21 (качественная задача) — 3 балла.</li>
+            <li>Задания 22, 23 — по 2 балла.</li>
+            <li>Задания 24, 25 — по 3 балла.</li>
+            <li>Задание 26 — 4 балла.</li>
+            <li>Максимум за часть 2 — 17 баллов.</li>
+          </ul>
+        </div>
+
+        <div class="card success-card">
+          <span class="tag green">Итого</span>
+          <h3>26 заданий = 45 баллов</h3>
+          <ul class="mini-list">
+            <li>Часть 1 — 28 баллов.</li>
+            <li>Часть 2 — 17 баллов.</li>
+            <li>Разрешены линейка и непрограммируемый калькулятор.</li>
+            <li>Справочные материалы выдаются вместе с КИМ.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag">Анти-ИИ</span>
+          <h3>Проверяй ход решения</h3>
+          <p>
+            В физике ответ без обоснования не даёт балла в части 2. ИИ может выдать правдоподобный ответ с грубой физической ошибкой.
+            Проверяй выбор системы отсчёта, модели тела, единицы измерения, границы применимости законов и реалистичность результата.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="changes">
+      <div class="section-head">
+        <div>
+          <h2>Что обязательно учесть в ЕГЭ-2027</h2>
+          <p class="sub">По проекту спецификации: структура КИМ не изменилась, но внесены коррективы в тематику заданий 21 и 23.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card success-card">
+          <span class="tag green">Структура</span>
+          <h3>Изменений структуры нет</h3>
+          <p>Количество заданий (26), максимальный первичный балл (45) и время (235 минут) сохранены.</p>
+        </div>
+
+        <div class="card warn-card">
+          <span class="tag orange">Уточнение</span>
+          <h3>Тематика 21 и 23</h3>
+          <p>Внесены коррективы в тематику заданий 21 и 23. Это может повлиять на выбор задач для тренировки.</p>
+        </div>
+
+        <div class="card danger-card">
+          <span class="tag red">Три уровня сложности</span>
+          <h3>Б / П / В</h3>
+          <p>Базовый: 17 заданий, 22 балла. Повышенный: 6 заданий, 13 баллов. Высокий: 3 задания, 10 баллов.</p>
+        </div>
+
+        <div class="card warn-card">
+          <span class="tag orange">Оборудование</span>
+          <h3>Калькулятор + линейка</h3>
+          <p>Разрешён непрограммируемый калькулятор и линейка. Калькулятор должен уметь вычислять sin, cos, tg.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="criteria">
+      <div class="section-head">
+        <div>
+          <h2>Критерии части 2: на что смотреть</h2>
+          <p class="sub">Задания 21–26 проверяются экспертами. Важна обоснованность, ссылки на законы и корректность формул.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Задание 21</span>
+          <h3>Качественная задача — 3 балла</h3>
+          <ul class="mini-list">
+            <li>Нужно объяснить явление, опираясь на законы.</li>
+            <li>Полное объяснение с указанием явлений, законов и формул — 3 балла.</li>
+            <li>Есть правильный ответ, но не хватает одного закона/явления или есть логический недочёт — 2 балла.</li>
+            <li>Частичные верные рассуждения — 1 балл.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag">Задания 22, 23</span>
+          <h3>Расчётные задачи — по 2 балла</h3>
+          <ul class="mini-list">
+            <li>Полное решение с формулами, преобразованиями и ответом — 2 балла.</li>
+            <li>Один недочёт: нет рисунка, нет обозначений, нет единиц, лишние записи, вычислительная ошибка — 1 балл.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag">Задания 24, 25</span>
+          <h3>Расчётные задачи — по 3 балла</h3>
+          <ul class="mini-list">
+            <li>Полное решение с обоснованием, формулами, преобразованиями и ответом — 3 балла.</li>
+            <li>Есть недочёты в оформлении или вычислениях — 2 балла.</li>
+            <li>Только исходные формулы без развития решения или одна отсутствующая/ошибочная формула при верных преобразованиях — 1 балл.</li>
+          </ul>
+        </div>
+
+        <div class="card danger-card">
+          <span class="tag red">Задание 26</span>
+          <h3>Расчётная задача — 4 балла</h3>
+          <ul class="mini-list">
+            <li>Критерий 1: обоснование применимости законов — 1 балл.</li>
+            <li>Критерий 2: решение задачи — до 3 баллов.</li>
+            <li>Нужно указать ИСО, модель материальной точки или твёрдого тела, условия сохранения импульса/энергии и т. п.</li>
+          </ul>
+        </div>
+
+        <div class="card danger-card">
+          <span class="tag red">Ответ без решения</span>
+          <h3>0 баллов</h3>
+          <p>Правильный ответ при отсутствии обоснованного решения в части 2 оценивается 0 баллов.</p>
+        </div>
+
+        <div class="card warn-card">
+          <span class="tag orange">Третий эксперт</span>
+          <h3>Существенные расхождения</h3>
+          <p>
+            Расхождение в 2 и более балла по любому из заданий 21–25 или по критерию К2 задания 26 — назначается третья проверка.
+            Если один эксперт указал отсутствие ответа, а другой выставил ненулевой балл, третий эксперт проверяет спорное задание.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="trainer">
+      <div class="section-head">
+        <div>
+          <h2>Тренажёр: 26 заданий ЕГЭ-2027</h2>
+          <p class="sub">
+            Часть 1 — вводи ответ. Часть 2 — самопроверка по критериям.
+            Автоматически считаются только задания 1–20.
+          </p>
+        </div>
+      </div>
+
+      <p class="note">
+        Сверено по проекту демоверсии ФИПИ ЕГЭ-2027. На позиции 26 в демоверсии приведено три примера; в тренажёре — пример 1.
+        Там, где в демоверсии даны рисунки, приведены текстовые описания, эквивалентные условию для офлайн-проверки.
+      </p>
+
+      <div class="reset-bar">
+        <button class="btn secondary small" onclick="resetAll()">Сбросить все ответы</button>
+      </div>
+
+      <div id="quizContainer"></div>
+      <div id="summaryBox"></div>
+    </section>
+
+    <section id="checklist">
+      <div class="section-head">
+        <div>
+          <h2>Чек-лист подготовки к ЕГЭ-2027</h2>
+          <p class="sub">Отмечай выполненные пункты — при новом открытии страницы чек-лист сбросится.</p>
+        </div>
+      </div>
+
+      <ul class="checklist" id="checklistUl"></ul>
+    </section>
+
+    <section id="plan">
+      <div class="section-head">
+        <div>
+          <h2>Полный курс 25 дней</h2>
+          <p class="sub">Маршрут подготовки по структуре ЕГЭ-2027.</p>
+        </div>
+      </div>
+
+      <div class="plan-grid" id="planGrid"></div>
+    </section>
+
+    <section id="support">
+      <div class="support-card">
+        <h2>🤝 ПОДДЕРЖАТЬ ПРОЕКТ 💙</h2>
+        <p><strong>Приложение бесплатное. Было и останется.</strong></p>
+        <p>Все приложения бесплатны и без рекламы. Ваша помощь помогает развитию офлайн-безопасности и образования.</p>
+        <p>
+          <span>📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА:</span>
+          <a class="phone" href="tel:89202275676">8-920-227-56-76</a>
+          <button class="btn small" onclick="copyPhone()">📋 Копировать номер</button>
+          <span id="copyStatus" class="copy-status" aria-live="polite"></span>
+        </p>
+        <p>✅ Деньги придут мгновенно. Без комиссии. Безопасно.</p>
+        <p>❤️ Спасибо за поддержку!</p>
+        <p>🌟 👉 <a href="https://ancf-hue.github.io/" target="_blank" rel="noopener noreferrer">Каталог бесплатных офлайн-приложений ANTI-AI SHIELD</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      Анти-ИИ Квен Академия • Бесплатный HTML-проект • Физика ЕГЭ-2027 • Проект ФИПИ
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // ДАННЫЕ ТРЕНАЖЁРА
+    // ============================================================
+    const TOTAL_TASKS = 26;
+    const PART1_TASKS = 20;
+    const TOTAL_MAX_PRIMARY = 45;
+
+    // Веса заданий по спецификации ЕГЭ-2027 по физике.
+    // Задания 1–4, 7, 8, 11–13, 16, 19, 20 — по 1 баллу.
+    // Задания 5, 6, 9, 10, 14, 15, 17, 18 — по 2 балла.
+    const WEIGHTS = {
+      5: 2, 6: 2, 9: 2, 10: 2, 14: 2, 15: 2, 17: 2, 18: 2,
+      // часть 2
+      21: 3, 22: 2, 23: 2, 24: 3, 25: 3, 26: 4
+    };
+
+    const QUIZ = [
+      // ============= ЧАСТЬ 1 =============
+      { n: 1, type: "auto", answerType: "number", answer: "-5", maxBall: 1,
+        text: "На рисунке приведён график зависимости проекции vx скорости тела от времени t. Известно, что на отрезке от 2 до 4 с скорость меняется линейно от 6 м/с до −4 м/с. Определите проекцию ax ускорения этого тела в интервале времени от 2 до 4 с. Ответ запишите с учётом знака проекции.",
+        info: "Задание 1 — кинематика. Ускорение — это скорость изменения проекции скорости: ax = Δvx / Δt. На отрезке [2; 4] Δvx = −4 − 6 = −10 м/с, Δt = 4 − 2 = 2 с.",
+        explanation: "ax = −10 / 2 = −5 м/с². Ответ: −5.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 1." },
+
+      { n: 2, type: "auto", answerType: "number", answer: "16", maxBall: 1,
+        text: "В инерциальной системе отсчёта сила F сообщает телу массой m ускорение, модуль которого равен 4 м/с². Чему равен модуль ускорения тела массой 0,5m под действием силы 2F в этой системе отсчёта? Ответ дайте в м/с².",
+        info: "Задание 2 — второй закон Ньютона. a = F / m. Для исходного тела: 4 = F / m. Для нового: a' = 2F / (0,5m) = 4 · (F/m) = 4 · 4 = 16.",
+        explanation: "Правильный ответ: 16 м/с².",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 2." },
+
+      { n: 3, type: "auto", answerType: "number", answer: "20", maxBall: 1,
+        text: "Камень массой 1,5 кг брошен вертикально вверх. В начальный момент его кинетическая энергия равна 300 Дж. На какую максимальную высоту поднимется камень над точкой старта? Сопротивлением воздуха пренебречь. Ответ дайте в метрах.",
+        info: "Задание 3 — закон сохранения энергии. Кинетическая энергия полностью переходит в потенциальную: Ek = mgh. Тогда h = Ek / (mg) = 300 / (1,5 · 10) = 20.",
+        explanation: "Правильный ответ: 20 м.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 3." },
+
+      { n: 4, type: "auto", answerType: "number", answer: "6", maxBall: 1,
+        text: "Невесомый рычаг находится в равновесии, когда к правому плечу длиной l₂ = 15 см подвешен груз массой m₂ = 0,2 кг, а к левому плечу — груз массой m₁ = 0,5 кг. Чему равна длина левого плеча рычага l₁? Ответ дайте в сантиметрах.",
+        info: "Задание 4 — статика, правило моментов: m₁·g·l₁ = m₂·g·l₂, поэтому m₁·l₁ = m₂·l₂. Тогда l₁ = m₂·l₂ / m₁ = 0,2 · 15 / 0,5 = 6.",
+        explanation: "Правильный ответ: 6 см.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 4." },
+
+      { n: 5, type: "auto", answerType: "digits", answer: "124", orderIndependent: true, maxBall: 2,
+        text: "В лабораторной работе изучали движение бруска массой 400 г по горизонтальной шероховатой поверхности под действием горизонтальной постоянной силы, равной по модулю 1,6 Н. Известно, что скорость бруска менялась так: t = 0 с → v = 0; t = 1 с → v = 0,5; t = 2 с → v = 1,0; t = 3 с → v = 1,5 м/с. Выберите все верные утверждения.\n1) Коэффициент трения бруска о поверхность μ = 0,35.\n2) В момент времени 2 с кинетическая энергия бруска равна 0,2 Дж.\n3) Брусок движется равномерно.\n4) Модуль ускорения бруска равен 0,5 м/с².\n5) Сила трения скольжения, действующая на брусок, равна по модулю 1,8 Н.\nВ ответе запишите номера без пробелов и запятых. Порядок цифр значения не имеет.",
+        info: "Задание 5 — множественный выбор по данным движения. Проверяем каждое утверждение: 1) a = Δv/Δt = 0,5 м/с²; по второму закону Ньютона ma = F − Fтр; Fтр = 1,6 − 0,4·0,5 = 1,4 Н; μ = Fтр/(mg) = 1,4/(0,4·10) = 0,35 ✓. 2) Ek = mv²/2 = 0,4·1²/2 = 0,2 Дж ✓. 3) Скорость растёт — движение равноускоренное, не равномерное ✗. 4) a = 0,5 м/с² ✓. 5) Fтр = 1,4 Н, а не 1,8 Н ✗.",
+        explanation: "Правильный ответ: 124.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 5." },
+
+      { n: 6, type: "auto", answerType: "digits", answer: "32", orderIndependent: false, maxBall: 2,
+        text: "Деревянный шарик плавает в керосине. Как изменятся сила тяжести, действующая на шарик, и глубина погружения шарика в жидкость, если он будет плавать в воде? Для каждой величины определите соответствующий характер изменения:\n1) увеличится\n2) уменьшится\n3) не изменится\nВ ответе запишите две цифры подряд без пробелов: сначала для силы тяжести, потом для глубины погружения.",
+        info: "Задание 6 — соответствие. Сила тяжести зависит только от массы тела и ускорения свободного падения, поэтому не изменится. Плотность воды больше плотности керосина, значит для той же силы Архимеда нужно вытеснить меньший объём жидкости — глубина погружения уменьшится.",
+        explanation: "Правильный ответ: 32 (сила тяжести — 3, глубина погружения — 2).",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 6." },
+
+      { n: 7, type: "auto", answerType: "number", answer: "3", maxBall: 1,
+        text: "При температуре T₀ и давлении p₀ 1,5 моль идеального газа занимает объём 3V₀. Сколько моль этого газа будут занимать объём 6V₀ при температуре T₀/2 и давлении p₀/2? Ответ дайте в молях.",
+        info: "Задание 7 — уравнение Менделеева-Клапейрона. pV = νRT ⇒ ν ∝ pV / T. Тогда ν₂ = ν₁ · (p₂/p₁) · (V₂/V₁) · (T₁/T₂) = 1,5 · (1/2) · (6V₀/3V₀) · (T₀/(T₀/2)) = 1,5 · 0,5 · 2 · 2 = 3.",
+        explanation: "Правильный ответ: 3 моль.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 7." },
+
+      { n: 8, type: "auto", answerType: "number", answer: "240", maxBall: 1,
+        text: "При остывании чугунной болванки с 450 до 80 °С выделилось количество теплоты, равное 44 400 кДж. Чему равна масса этой болванки? Удельная теплоёмкость чугуна 500 Дж/(кг·К). Ответ дайте в килограммах.",
+        info: "Задание 8 — количество теплоты. Q = cmΔT. ΔT = 450 − 80 = 370 К. Q = 44 400 кДж = 44 400 000 Дж. m = Q / (c·ΔT) = 44 400 000 / (500 · 370) = 240.",
+        explanation: "Правильный ответ: 240 кг.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 8." },
+
+      { n: 9, type: "auto", answerType: "digits", answer: "13", orderIndependent: true, maxBall: 2,
+        text: "Сосуд разделён на две равные по объёму части пористой неподвижной перегородкой. В левую часть поместили 1 моль неона, в правую — 2 моль гелия. Перегородка пропускает молекулы гелия и непроницаема для молекул неона. Температура газов одинакова и остаётся неизменной. Выберите все верные утверждения.\n1) Концентрации молекул гелия и неона в левой части сосуда одинаковы.\n2) В левой части сосуда внутренняя энергия неона больше внутренней энергии гелия.\n3) Общая концентрация молекул газов в левой части сосуда в 2 раза больше, чем в правой части.\n4) В левой части сосуда общее число молекул газов в 1,5 раза больше, чем в правой части.\n5) В результате установления равновесия давление в левой части сосуда увеличилось в 1,5 раза.\nОтвет запишите без пробелов и запятых. Порядок цифр значения не имеет.",
+        info: "Задание 9 — молекулярная физика. После установления равновесия гелий распределится поровну между равными по объёму частями: по 1 моль слева и справа. Неон останется только слева: 1 моль. Итого слева 2 моль газа, справа 1 моль. Проверка: 1) слева He 1 моль и Ne 1 моль в равных объёмах — концентрации одинаковы ✓. 2) для одноатомных газов U = 3/2 νRT; при равных ν и T внутренняя энергия одинакова ✗. 3) общая концентрация слева 2/V, справа 1/V — в 2 раза больше ✓. 4) число молекул слева в 2 раза больше, не в 1,5 ✗. 5) давление слева стало пропорционально 2 моль, было пропорционально 1 моль — выросло в 2 раза, не в 1,5 ✗.",
+        explanation: "Правильный ответ: 13.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 9." },
+
+      { n: 10, type: "auto", answerType: "digits", answer: "32", orderIndependent: false, maxBall: 2,
+        text: "Один моль идеального газа участвует в процессе 1–2–3, график которого изображён в координатах p–T. На участке 1–2 прямая проходит через начало координат, то есть p/T = const. На участке 2–3 температура постоянна, а давление растёт. Как изменяются концентрация молекул газа n в ходе процесса 1–2 и объём газа V в ходе процесса 2–3? Для каждой величины выберите характер изменения:\n1) увеличивается\n2) уменьшается\n3) не изменяется\nВ ответе запишите две цифры: сначала для n в процессе 1–2, потом для V в процессе 2–3.",
+        info: "Задание 10 — чтение графика p–T. В процессе 1–2 p/T = const. Для постоянного числа молекул p = (Nk/V)T, значит p/T ∝ 1/V. Если p/T не меняется, то V постоянно, а концентрация n = N/V не изменяется. В процессе 2–3 T = const, а давление растёт. По закону Бойля-Мариотта pV = const, значит объём уменьшается.",
+        explanation: "Правильный ответ: 32 (n не изменяется — 3, V уменьшается — 2).",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 10." },
+
+      { n: 11, type: "auto", answerType: "number", answer: "1.6", maxBall: 1,
+        text: "На фотографии электрической цепи постоянного тока вольтметр показывает 2,4 В на участке, состоящем из последовательно соединённых резисторов 1 Ом и 2 Ом. Какое напряжение будет показывать идеальный вольтметр, если его подсоединить к резистору сопротивлением 2 Ом в этой же цепи? Сопротивлением амперметра и проводами пренебречь. Ответ дайте в вольтах.",
+        info: "Задание 11 — закон Ома для участка цепи. Сопротивление исходного участка R = 1 + 2 = 3 Ом. Сила тока I = U/R = 2,4 / 3 = 0,8 А. На резисторе 2 Ом напряжение U' = I·R' = 0,8 · 2 = 1,6 В.",
+        explanation: "Правильный ответ: 1,6 В.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 11." },
+
+      { n: 12, type: "auto", answerType: "number", answer: "2", maxBall: 1,
+        text: "Прямолинейный проводник длиной L, по которому протекает ток I, помещён в однородное магнитное поле перпендикулярно линиям индукции B. Во сколько раз увеличится сила Ампера, действующая на проводник, если его длину увеличить в 4 раза, а индукцию магнитного поля уменьшить в 2 раза? Сила тока и взаимное расположение проводника и линий индукции остаются неизменными. Ответ дайте числом.",
+        info: "Задание 12 — сила Ампера. F = BIL·sinα, при α = 90° sinα = 1. После изменений: F' = (B/2)·I·(4L) = 2·BIL = 2F. Значит сила увеличится в 2 раза.",
+        explanation: "Правильный ответ: 2.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 12." },
+
+      { n: 13, type: "auto", answerType: "number", answer: "50", maxBall: 1,
+        text: "Свет падает на горизонтально расположенное плоское зеркало. Угол между падающим и отражённым лучами равен 70°. Каким станет угол между этими лучами, если повернуть зеркало на 10° так, как показано на рисунке демоверсии? Ответ дайте в градусах.",
+        info: "Задание 13 — законы отражения света. Угол между падающим и отражённым лучами равен 2α, где α — угол падения. При повороте зеркала на угол φ отражённый луч поворачивается на 2φ. По рисунку демоверсии поворот уменьшает угол между лучами: 70° − 2·10° = 50°.",
+        explanation: "Правильный ответ: 50 градусов.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 13." },
+
+      { n: 14, type: "auto", answerType: "digits", answer: "245", orderIndependent: true, maxBall: 2,
+        text: "Две параллельные металлические пластины больших размеров расположены на расстоянии d друг от друга и подключены к источнику постоянного напряжения. Не отключая пластины от источника, их сближают, уменьшая расстояние между ними в 2 раза. Выберите все верные утверждения, характеризующие свойства конденсатора после установления равновесия.\n1) Энергия электрического поля конденсатора увеличилась в 4 раза.\n2) Модуль заряда обкладок конденсатора увеличился в 2 раза.\n3) Напряжение между обкладками конденсатора уменьшилось в 4 раза.\n4) Электроёмкость конденсатора увеличилась в 2 раза.\n5) Напряжённость электростатического поля между обкладками конденсатора увеличилась в 2 раза.\nОтвет запишите без пробелов и запятых. Порядок цифр значения не имеет.",
+        info: "Задание 14 — плоский конденсатор. Пластины не отключены от источника, поэтому U = const. Электроёмкость C = ε₀S/d; при уменьшении d в 2 раза C увеличивается в 2 раза ✓. Заряд q = CU, значит q увеличивается в 2 раза ✓. Энергия W = CU²/2, поэтому W увеличивается в 2 раза, а не в 4 ✗. Напряжение не меняется ✗. Напряжённость E = U/d, при уменьшении d в 2 раза E увеличивается в 2 раза ✓.",
+        explanation: "Правильный ответ: 245.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 14." },
+
+      { n: 15, type: "auto", answerType: "digits", answer: "31", orderIndependent: false, maxBall: 2,
+        text: "Конденсатор идеального колебательного контура длительное время подключён к источнику постоянного напряжения. В момент t = 0 переключатель перевели из положения 1 в положение 2, и в контуре возникли свободные электромагнитные колебания. Графики А и Б отражают изменение с течением времени физических величин, характеризующих колебания. Установите соответствие между графиками и физическими величинами:\n1) заряд левой обкладки конденсатора\n2) модуль напряжения на конденсаторе\n3) энергия электрического поля конденсатора\n4) сила тока в катушке\nВ ответе запишите две цифры подряд: сначала для графика А, потом для графика Б.",
+        info: "Задание 15 — электромагнитные колебания. В начальный момент конденсатор заряжен максимально, сила тока равна нулю. По проекту демоверсии график А соответствует энергии электрического поля конденсатора, а график Б — заряду левой обкладки конденсатора.",
+        explanation: "Правильный ответ: 31.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 15." },
+
+      { n: 16, type: "auto", answerType: "number", answer: "0.2", maxBall: 1,
+        text: "Период полураспада изотопа магния ²⁸₁₂Mg равен 21 ч. Изначально образец содержал 0,8 мкмоль этого изотопа. Какое количество вещества этого изотопа останется через 42 ч? Ответ дайте в мкмоль.",
+        info: "Задание 16 — закон радиоактивного распада. За 42 ч проходит 42 / 21 = 2 периода полураспада. Количество вещества уменьшится в 2² = 4 раза: 0,8 / 4 = 0,2 мкмоль.",
+        explanation: "Правильный ответ: 0,2 мкмоль.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 16." },
+
+      { n: 17, type: "auto", answerType: "digits", answer: "21", orderIndependent: false, maxBall: 2,
+        text: "На рисунке изображена упрощённая диаграмма нижних энергетических уровней атома. Стрелками отмечены некоторые возможные переходы атома между уровнями. Установите соответствие между процессами и энергией соответствующего фотона:\nА) поглощение света наибольшей длины волны\nБ) испускание света наименьшей частоты\nЭнергии фотонов в демоверсии: 1) E₁ − E₀, 2) E₂ − E₀, 3) E₃ − E₀, 4) E₄ − E₀.\nВ ответе запишите две цифры подряд: А и Б.",
+        info: "Задание 17 — квантовая физика. Энергия фотона связана с длиной волны и частотой: E = hν = hc/λ. Наибольшей длине волны при поглощении соответствует наименьшая допустимая энергия поглощения. Наименьшей частоте при испускании соответствует наименьшая энергия испускания. По рисунку демоверсии: А — вариант 2, Б — вариант 1.",
+        explanation: "Правильный ответ: 21.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 17." },
+
+      { n: 18, type: "auto", answerType: "digits", answer: "35", orderIndependent: true, maxBall: 2,
+        text: "Выберите все верные утверждения о физических явлениях, величинах и закономерностях. Запишите цифры, под которыми они указаны.\n1) Потенциальная энергия упруго растянутой пружины прямо пропорциональна удлинению пружины.\n2) Давление насыщенного пара увеличивается при изотермическом уменьшении объёма пара.\n3) В процессе электризации трением незаряженные тела приобретают равные по модулю и противоположные по знаку заряды.\n4) Сила индукционного тока в замкнутом контуре обратно пропорциональна скорости изменения магнитного потока через поверхность, ограниченную контуром.\n5) Заряд ядра атома химического элемента, выраженный в единицах элементарного заряда, равен номеру данного элемента в Периодической системе элементов Д. И. Менделеева.\nОтвет запишите без пробелов и запятых. Порядок цифр значения не имеет.",
+        info: "Задание 18 — общий проверка знаний. 1) Ep = kx²/2, энергия пропорциональна квадрату удлинения ✗. 2) Давление насыщенного пара при постоянной температуре не зависит от объёма ✗. 3) Закон сохранения электрического заряда ✓. 4) ЭДС индукции и сила индукционного тока пропорциональны скорости изменения магнитного потока, а не обратно пропорциональны ✗. 5) Заряд ядра равен порядковому номеру элемента ✓.",
+        explanation: "Правильный ответ: 35.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 18." },
+
+      { n: 19, type: "auto", answerType: "pair", answer: ["0.4", "0.1"], maxBall: 1,
+        text: "Определите показания вольтметра, если абсолютная погрешность прямого измерения напряжения равна цене деления прибора. По демоверсии вольтметр показывает 0,4 В, а цена деления равна 0,1 В. В ответе запишите два числа подряд без пробелов и других символов, как в бланке ЕГЭ: например 0,40,1.",
+        info: "Задание 19 — запись результата измерения с погрешностью. Показание прибора: 0,4 В. Погрешность равна цене деления: 0,1 В. В бланк переносят числа подряд: 0,40,1.",
+        explanation: "Правильный ответ: 0,40,1, то есть 0,4 В ± 0,1 В.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 19." },
+
+      { n: 20, type: "auto", answerType: "digits", answer: "24", orderIndependent: true, maxBall: 1,
+        text: "Необходимо экспериментально обнаружить зависимость силы тока, протекающего в цепи, от ЭДС источника. Какие две электрические цепи, схемы которых приведены в демоверсии, следует использовать для такого исследования?\n1) источник (ε, r), амперметр, резистор R;\n2) источник (2ε, r), амперметр, резистор 2R;\n3) источник (2ε, 2r), амперметр, резистор 2R;\n4) источник (ε, r), амперметр, резистор 2R;\n5) источник (ε, 2r), амперметр, резистор R.\nВ ответе запишите номера выбранных схем. Порядок записи символов значения не имеет.",
+        info: "Задание 20 — методология эксперимента. Чтобы исследовать зависимость силы тока от ЭДС, нужно изменить только ЭДС источника, оставив внешнее сопротивление R и внутреннее сопротивление r неизменными. Подходят цепи 2 и 4: в обеих r одинаково и внешнее сопротивление 2R одинаково, а ЭДС различается: 2ε и ε.",
+        explanation: "Правильный ответ: 24.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 20." },
+
+      // ============= ЧАСТЬ 2 =============
+      { n: 21, type: "essay", maxBall: 3,
+        text: "На рисунке изображена электрическая цепь, состоящая из гальванического элемента, двух идеальных диодов, двух ключей, двух резисторов, идеальных амперметра и вольтметра. В начальный момент времени ключ К₁ замкнут, а ключ К₂ разомкнут. Опираясь на законы электродинамики, объясните, как изменятся показания приборов, если ключ К₁ разомкнуть, а ключ К₂ замкнуть.",
+        info: "Задание 21 — качественная задача, 3 балла. Возможная логика: 1) в начальном состоянии диод, через который мог бы идти ток, закрыт, поэтому ток в цепи отсутствует; амперметр показывает 0, вольтметр показывает ЭДС источника. 2) После переключения ключей открывается второй диод, ток идёт через резистор; по закону Ома для полной цепи появляется nonzero ток, показания амперметра увеличиваются. 3) Вольтметр теперь измеряет напряжение на внешнем участке, которое меньше ЭДС из-за падения напряжения на внутреннем сопротивлении: U = ε − Ir. Показания вольтметра уменьшаются.",
+        explanation: "Ответ: показания вольтметра уменьшатся, а показания амперметра увеличатся. Обоснование опирается на условие протекания тока через диод, закон Ома для полной цепи и закон Ома для участка цепи.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 21.",
+        options: [
+          { label: "0 баллов: решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: указаны не все необходимые явления/законы, но есть верные рассуждения, направленные к решению", balls: 1 },
+          { label: "2 балла: дан правильный ответ и объяснение, но есть один логический недочёт, лишние незакрытые записи или не указано одно необходимое явление/закон", balls: 2 },
+          { label: "3 балла: полное правильное объяснение с указанием наблюдаемых явлений, законов и формул", balls: 3 }
+        ] },
+
+      { n: 22, type: "essay", maxBall: 2,
+        text: "При игре в крокет на лужайке однородный дубовый шар массой m = 454 г закатился в ямку с водой, при этом половина шара оказалась в воде. Определите плотность дерева, если шар давит на ровное дно ямки с силой F = 1,66 Н. Сделайте схематичный рисунок с указанием сил, действующих на шар. Примите g = 10 м/с², плотность воды 1000 кг/м³.",
+        info: "Задание 22 — расчётная задача, 2 балла. На шар действуют: сила тяжести mg вниз, силаArchimedes вверх, сила нормальной реакции дна N вверх. Шар давит на дно с силой F, поэтому по третьему закону Ньютона N = F. Условие равновесия: F_A + N = mg. Так как погружена половина объёма, F_A = ρ_в g V/2, а V = m/ρ. Отсюда ρ_в g m/(2ρ) + F = mg, поэтому ρ = ρ_в m g / [2(mg − F)].",
+        explanation: "ρ = 1000 · 0,454 · 10 / [2(0,454 · 10 − 1,66)] ≈ 790 кг/м³. Ответ: ≈ 790 кг/м³.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 22.",
+        options: [
+          { label: "0 баллов: решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: записаны необходимые законы, но есть недочёт: нет рисунка, нет обозначений, есть лишние записи, ошибка в преобразованиях или нет единиц в ответе", balls: 1 },
+          { label: "2 балла: полное верное решение с законами, рисунком, преобразованиями и правильным ответом с единицами", balls: 2 }
+        ] },
+
+      { n: 23, type: "essay", maxBall: 2,
+        text: "Во время опыта объём сосуда с разреженным аргоном не менялся, и аргон перешёл из состояния 1 в состояние 2. Кран у сосуда был закрыт неплотно, и сквозь него мог просачиваться аргон. Известно: p₁ = 2·10⁵ Па, T₁ = 450 К; p₂ = 1·10⁵ Па, T₂ = 900 К. Определите отношение N₂/N₁ числа молекул газа в сосуде в конце и в начале опыта.",
+        info: "Задание 23 — расчётная задача, 2 балла. Используем уравнение состояния в виде p = nkT, где n = N/V. Отсюда N = pV/(kT). Объём сосуда не меняется, поэтому N₂/N₁ = (p₂/T₂) / (p₁/T₁) = (p₂ T₁) / (p₁ T₂).",
+        explanation: "N₂/N₁ = (1·10⁵ · 450) / (2·10⁵ · 900) = 450 / 1800 = 1/4 = 0,25. Ответ: 1/4.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 23.",
+        options: [
+          { label: "0 баллов: решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: есть необходимые формулы, но отсутствуют обозначения, допущена вычислительная ошибка или пропущены логически важные шаги", balls: 1 },
+          { label: "2 балла: полное верное решение с уравнением состояния, преобразованиями и правильным ответом", balls: 2 }
+        ] },
+
+      { n: 24, type: "essay", maxBall: 3,
+        text: "Сосуд разделён перегородкой на две части. Объём первой части V₁ = 2 л, объём второй части V₂ = 3 л. В первой части сосуда находятся влажный воздух и вода, причём масса водяного пара в 2 раза больше, чем масса воды. Вторая часть сосуда пустая. Найдите относительную влажность воздуха в сосуде после снятия перегородки. Температура воздуха в сосуде постоянна и не меняется при снятии перегородки. Объёмом перегородки пренебречь.",
+        info: "Задание 24 — расчётная задача, 3 балла. До снятия перегородки водяной пар насыщенный, потому что в сосуде есть жидкая вода. Обозначим массу первоначального пара m. Тогда масса воды m/2, а полная масса пара после испарения всей воды будет 3m/2. Для насыщенного пара p_нас = mRT/(μV₁). После снятия перегородки, если вся вода испарилась, парциальное давление p' = (3m/2)RT/[μ(V₁+V₂)]. Относительная влажность φ = p'/p_нас = (3/2)·V₁/(V₁+V₂) = (3/2)·2/5 = 3/5 = 60%. Так как φ < 100%, предположение об испарении всей воды само согласуется с решением.",
+        explanation: "Ответ: 60%.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 24.",
+        options: [
+          { label: "0 баллов: решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: представлены только исходные формулы без преобразований, или отсутствует/ошибочна одна исходная формула при верных дальнейших рассуждениях", balls: 1 },
+          { label: "2 балла: правильно записаны законы и проведены преобразования, но есть недочёт: нет обозначений, лишние записи, вычислительная ошибка или ошибка в единицах ответа", balls: 2 },
+          { label: "3 балла: полное верное решение с свойствами насыщенного пара, уравнением Менделеева-Клапейрона, формулой влажности и правильным ответом", balls: 3 }
+        ] },
+
+      { n: 25, type: "essay", maxBall: 3,
+        text: "Из никелиновой проволоки с удельным сопротивлением ρ = 42·10⁻⁸ Ом·м и площадью поперечного сечения S = 0,2 мм² изготовлен прямоугольный контур KLMN с диагональю KM. Стороны прямоугольника KL = l₁ = 20 см и LM = l₂ = 15 см. Контур подключён за диагональ KM к источнику постоянного напряжения с ЭДС ε = 1,5 В и помещён в однородное магнитное поле, вектор магнитной индукции которого параллелен сторонам KL и MN и равен по модулю B = 0,1 Тл. Чему равен модуль результирующей силы, с которой магнитное поле действует на контур? Сделайте рисунок с указанием сил, действующих на стороны контура и его диагональ со стороны магнитного поля. Внутренним сопротивлением источника пренебречь.",
+        info: "Задание 25 — расчётная задача, 3 балла. Контур можно представить как три параллельно соединённых проводника: сторона KLM, сторона KNM и диагональ KM. На стороны KL и MN силы Ампера не действуют, потому что они параллельны вектору B. На стороны LM и KN действуют силы, направленные одинаково; на диагональ KM также действует сила Ампера, модуль которой находится через проекцию длины диагонали на направление, перпендикулярное B. Результирующая сила равна векторной сумме этих сил; по рисунку демоверсии все учтённые силы направлены одинаково, поэтому модули складываются. Числовой ответ по демоверсии ≈ 0,1 Н.",
+        explanation: "Ответ: ≈ 0,1 Н.",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 25.",
+        options: [
+          { label: "0 баллов: решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: представлены только законы/формулы без решения, или отсутствует/ошибочна одна исходная формула при верных преобразованиях", balls: 1 },
+          { label: "2 балла: верно записаны законы и проведены преобразования, но есть недочёт в рисунке, обозначениях, вычислениях или единицах ответа", balls: 2 },
+          { label: "3 балла: полное верное решение с законом Ома, сопротивлением проводника, силой Ампера, правилом левой руки, рисунком и правильным ответом", balls: 3 }
+        ] },
+
+      { n: 26, type: "essay", maxBall: 4,
+        text: "Пластилиновый шарик в момент t = 0 бросают с горизонтальной поверхности Земли под углом α к горизонту. Одновременно с некоторой высоты над поверхностью Земли начинает падать из состояния покоя другой такой же шарик. Шарики абсолютно неупруго сталкиваются в воздухе. Сразу после столкновения скорость шариков направлена горизонтально. Время от столкновения шариков до их падения на Землю равно τ. С какой начальной скоростью υ₀ был брошен первый шарик? Сопротивлением воздуха пренебречь. Обоснуйте применимость законов, используемых для решения задачи.",
+        info: "Задание 26 — задача высокого уровня, 4 балла. Обоснование: выбираем ИСО, связанную с Землёй; шарики считаем материальными точками; сопротивлением воздуха пренебрегаем, поэтому до и после удара движение свободное; время удара мало, импульсом силы тяжести за время столкновения можно пренебречь, поэтому импульс системы двух шариков сохраняется. Решение: до столкновения вертикальная скорость первого шарика υ₁ᵥ = υ₀ sinα − gt, второго υ₂ᵥ = −gt. После абсолютно неупругого удара скорость горизонтальна, значит сумма вертикальных импульсов равна нулю: υ₀ sinα − gt₁ − gt₁ = 0, откуда t₁ = υ₀ sinα/(2g). Высота столкновения h = υ₀ sinα·t₁ − gt₁²/2 = 3υ₀² sin²α/(8g). После удара шарики падают с высоты h за время τ: h = gτ²/2. Приравнивая, получаем 3υ₀² sin²α/(8g) = gτ²/2, откуда υ₀ = 2gτ/(√3 sinα).",
+        explanation: "Ответ: υ₀ = 2gτ / (√3 · sinα).",
+        source: "Проект демоверсии ФИПИ ЕГЭ-2027, физика, задание 26, первый пример.",
+        options: [
+          { label: "0 баллов: обоснование отсутствует и решение не соответствует критериям", balls: 0 },
+          { label: "1 балл: верно обоснована возможность использования законов, но решение неполное; либо решение частично верное, но обоснование отсутствует/неполное", balls: 1 },
+          { label: "2 балла: обоснование верное, решение в целом верное, но есть недочёты в обозначениях, преобразованиях или ответе", balls: 2 },
+          { label: "3 балла: обоснование верное, решение почти полное, есть один существенный недочёт в оформлении или вычислениях", balls: 3 },
+          { label: "4 балла: полное верное решение с обоснованием применимости законов, сохранением импульса, кинематикой и правильным ответом", balls: 4 }
+        ] }
+    ];
+
+    const CHECKLIST_ITEMS = [
+      { key: "ch1", text: "Повторил кинематику: графики движения, ускорение, свободное падение, бросок под углом." },
+      { key: "ch2", text: "Отработал законы Ньютона и силы в механике: тяжесть, упругости, трения, Архимеда." },
+      { key: "ch3", text: "Повторил статику: моменты сил, рычаг, условия равновесия твёрдого тела." },
+      { key: "ch4", text: "Отработал законы сохранения: импульс, кинетическая и потенциальная энергия, работа." },
+      { key: "ch5", text: "Повторил МКТ: уравнение Менделеева-Клапейрона, изопроцессы, графики p–V, p–T, V–T." },
+      { key: "ch6", text: "Отработал тепловые явления: Q = cmΔT, плавление, парообразование, сгорание." },
+      { key: "ch7", text: "Повторил термодинамику: первый закон, работа газа, внутренняя энергия, КПД." },
+      { key: "ch8", text: "Отработал влажность воздуха и насыщенный пар." },
+      { key: "ch9", text: "Повторил электростатику: закон Кулона, напряжённость, потенциал, энергия поля." },
+      { key: "ch10", text: "Отработал конденсаторы: электроёмкость, параллельное и последовательное соединения, энергия." },
+      { key: "ch11", text: "Повторил постоянный ток: закон Ома для участка и полной цепи, ЭДС, внутреннее сопротивление." },
+      { key: "ch12", text: "Отработал соединения проводников, работу и мощность тока, закон Джоуля-Ленца." },
+      { key: "ch13", text: "Повторил магнитное поле: сила Ампера, сила Лоренца, правило левой руки." },
+      { key: "ch14", text: "Отработал электромагнитную индукцию: поток, закон Фарадея, правило Ленца, самоиндукция." },
+      { key: "ch15", text: "Повторил колебательный контур, формулу Томсона, электромагнитные волны." },
+      { key: "ch16", text: "Отработал оптику: отражение, преломление, полная проверка, линзы, формула тонкой линзы." },
+      { key: "ch17", text: "Повторил квантовую физику: фотон, фотоэффект, постулаты Бора, энергетические уровни." },
+      { key: "ch18", text: "Отработал физику ядра: альфа- и бета-распад, закон радиоактивного распада, ядерные реакции." },
+      { key: "ch19", text: "Решил минимум 5 качественных задач формата задания 21." },
+      { key: "ch20", text: "Написал минимум 3 полных решения части 2 с формулами, рисунками и ответами." },
+      { key: "ch21", text: "Проверил, что умею обосновывать применимость законов для задания 26." },
+      { key: "ch22", text: "Прошёл полный пробник на время 235 минут и разобрал все ошибки." }
+    ];
+
+    const PLAN_DAYS = [
+      { day: 1, critical: true, text: "Диагностика: пробник на время (235 минут)." },
+      { day: 2, critical: false, text: "Кинематика: графики, ускорение, свободное падение, бросок под углом." },
+      { day: 3, critical: false, text: "Динамика: законы Ньютона, силы, всемирное тяготение." },
+      { day: 4, critical: false, text: "Статика: моменты, рычаг, гидростатика, закон Архимеда." },
+      { day: 5, critical: false, text: "Законы сохранения: импульс, энергия, работа, мощность." },
+      { day: 6, critical: false, text: "Механические колебания и волны." },
+      { day: 7, critical: true, text: "МКТ: уравнение Менделеева-Клапейрона, изопроцессы, графики." },
+      { day: 8, critical: false, text: "Термодинамика: первый закон, теплота, КПД, цикл Карно." },
+      { day: 9, critical: false, text: "Влажность воздуха, насыщенный пар, фазовые переходы." },
+      { day: 10, critical: false, text: "Электростатика: Кулон, напряжённость, потенциал, проводники и диэлектрики." },
+      { day: 11, critical: false, text: "Конденсаторы: соединения, энергия, движение заряда в поле." },
+      { day: 12, critical: false, text: "Постоянный ток: закон Ома, соединения, работа и мощность, ЭДС." },
+      { day: 13, critical: false, text: "Магнитное поле: сила Ампера, сила Лоренца, правило левой руки." },
+      { day: 14, critical: false, text: "Электромагнитная индукция, правило Ленца, самоиндукция." },
+      { day: 15, critical: false, text: "Колебательный контур, переменный ток, электромагнитные волны." },
+      { day: 16, critical: false, text: "Оптика: отражение, преломление, линзы, интерференция, дифракция." },
+      { day: 17, critical: false, text: "Квантовая физика: фотон, фотоэффект, уровни энергии, спектры." },
+      { day: 18, critical: false, text: "Физика ядра: распад, дефект массы, ядерные реакции." },
+      { day: 19, critical: true, text: "Качественные задачи (задание 21): тренировка полных объяснений." },
+      { day: 20, critical: true, text: "Расчётные задачи части 2: тренировка оформления по критериям." },
+      { day: 21, critical: true, text: "Задачи на обоснование применимости законов (задание 26)." },
+      { day: 22, critical: false, text: "Пробник № 2 на время." },
+      { day: 23, critical: false, text: "Разбор ошибок и слабых тем." },
+      { day: 24, critical: false, text: "Повторение формул, констант и единиц измерения." },
+      { day: 25, critical: true, text: "Финальное повторение формата, тайминга и типичных ловушек." }
+    ];
+
+    // ============================================================
+    // ФУНКЦИИ
+    // ============================================================
+    let savedAnswers = {};
+    let checklistState = {};
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (m) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
+      });
+    }
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function normalizeNumber(value) {
+      return String(value)
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/,/g, ".")
+        .replace(/−/g, "-");
+    }
+
+    function normalizeDigits(value) {
+      return String(value).replace(/\D/g, "");
+    }
+
+    function sortDigits(value) {
+      return normalizeDigits(value).split("").sort().join("");
+    }
+
+    function extractNumbers(value) {
+      const s = String(value).replace(/,/g, ".");
+      const matches = s.match(/-?\d+(?:\.\d+)?/g);
+      return matches ? matches.map(function (m) { return Number(m); }) : [];
+    }
+
+    function formatPairAnswer(arr) {
+      return arr.map(function (x) {
+        return String(x).replace(".", ",");
+      }).join(" и ");
+    }
+
+    function isCorrectAuto(task, raw) {
+      if (task.answerType === "digits") {
+        const input = normalizeDigits(raw);
+        if (!input) return false;
+        const acceptable = task.answer ? [task.answer] : [];
+        if (task.orderIndependent) {
+          const sortedInput = sortDigits(input);
+          return acceptable.some(function (ans) { return sortDigits(ans) === sortedInput; });
+        }
+        return acceptable.some(function (ans) { return normalizeDigits(ans) === input; });
+      }
+
+      if (task.answerType === "pair") {
+        // Принимаем формат бланка ЕГЭ: 0,40,1, а также обычные разделённые варианты.
+        const inputDigits = normalizeDigits(raw);
+        const expectedDigits = task.answer.map(function (x) {
+          return normalizeDigits(x);
+        }).join("");
+        if (inputDigits && inputDigits === expectedDigits) return true;
+
+        const nums = extractNumbers(raw);
+        if (nums.length === 2) {
+          const expected = task.answer.map(function (a) { return Number(normalizeNumber(a)); });
+          const got = nums.slice().sort(function (a, b) { return a - b; });
+          const exp = expected.slice().sort(function (a, b) { return a - b; });
+          return got.every(function (v, i) { return Math.abs(v - exp[i]) < 1e-6; });
+        }
+        return false;
+      }
+
+      const inputNum = Number(normalizeNumber(raw));
+      if (!Number.isFinite(inputNum)) return false;
+      const expected = Number(normalizeNumber(task.answer));
+      return Number.isFinite(expected) && Math.abs(inputNum - expected) < 1e-6;
+    }
+
+    function renderChecklist() {
+      const ul = document.getElementById("checklistUl");
+      ul.innerHTML = CHECKLIST_ITEMS.map(function (item) {
+        const checked = checklistState[item.key] ? "checked" : "";
+        const doneClass = checklistState[item.key] ? "done" : "";
+        return [
+          '<li class="check-item ' + doneClass + '">',
+            '<input type="checkbox" id="' + item.key + '" data-key="' + item.key + '" ' + checked + ' />',
+            '<label for="' + item.key + '">' + escapeHtml(item.text) + '</label>',
+          '</li>'
+        ].join("");
+      }).join("");
+    }
+
+    function renderPlan() {
+      document.getElementById("planGrid").innerHTML = PLAN_DAYS.map(function (d) {
+        return [
+          '<div class="day ' + (d.critical ? "critical" : "") + '">',
+            '<b>День ' + d.day + '</b>',
+            escapeHtml(d.text),
+          '</div>'
+        ].join("");
+      }).join("");
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById("quizContainer");
+      container.innerHTML = QUIZ.map(function (task) {
+        const isAuto = task.type === "auto";
+        const partLabel = isAuto ? "Часть 1" : "Часть 2";
+        const tagClass = isAuto ? "orange" : "green";
+
+        let trainerHtml = "";
+        if (isAuto) {
+          let placeholder = "Введи ответ";
+          if (task.answerType === "digits") placeholder = "Например: 124";
+          if (task.answerType === "pair") placeholder = "Например: 0,40,1";
+
+          trainerHtml = [
+            '<div class="q-part">',
+              '<span class="q-trainer-label">Тренажёр — введи ответ</span>',
+              '<div class="answer-row">',
+                '<input id="input-' + task.n + '" class="answer-input" type="text" placeholder="' + escapeHtml(placeholder) + '" />',
+                '<button class="btn small" onclick="checkAuto(' + task.n + ')">Проверить</button>',
+              '</div>',
+            '</div>'
+          ].join("");
+        } else {
+          const optionsHtml = task.options.map(function (opt, idx) {
+            return '<button class="option" onclick="chooseEssay(' + task.n + ', ' + idx + ')">' + escapeHtml(opt.label) + '</button>';
+          }).join("");
+          trainerHtml = [
+            '<div class="q-part">',
+              '<span class="q-trainer-label">Самопроверка по критериям</span>',
+              '<div class="options" id="options-' + task.n + '">' + optionsHtml + '</div>',
+            '</div>'
+          ].join("");
+        }
+
+        return [
+          '<div class="question-block" id="q' + task.n + '">',
+            '<div class="q-number">Задание ' + task.n + ' / ' + TOTAL_TASKS + '</div>',
+            '<div style="margin:-8px 0 14px;"><span class="tag ' + tagClass + '">' + partLabel + '</span></div>',
+            '<div class="q-part">',
+              '<span class="q-part-label">1. Вопрос</span>',
+              '<div class="q-text">' + escapeHtml(task.text) + '</div>',
+            '</div>',
+            '<div class="q-info">',
+              '<span class="q-part-label" style="color:#d8ccff;">2. Что проверяет задание и как думать</span>',
+              '<p style="margin:0;">' + escapeHtml(task.info) + '</p>',
+            '</div>',
+            trainerHtml,
+            '<div id="result-' + task.n + '"></div>',
+          '</div>'
+        ].join("");
+      }).join("");
+
+      updateStats();
+      updateSummary();
+    }
+
+    function checkAuto(n) {
+      const task = QUIZ.find(function (q) { return q.n === n; });
+      if (!task || task.type !== "auto" || savedAnswers[n]) return;
+
+      const input = document.getElementById("input-" + n);
+      const raw = input.value;
+
+      if (!String(raw).trim()) {
+        alert("Введите ответ.");
+        return;
+      }
+
+      const correct = isCorrectAuto(task, raw);
+      savedAnswers[n] = { value: raw, correct: correct };
+
+      input.disabled = true;
+      input.value = raw;
+      input.classList.remove("correct", "wrong");
+      input.classList.add(correct ? "correct" : "wrong");
+
+      const resultBox = document.getElementById("result-" + n);
+      let correctText;
+      if (task.answerType === "pair") {
+        correctText = formatPairAnswer(task.answer) + " (в бланке: 0,40,1)";
+      } else if (task.answerType === "number") {
+        correctText = String(task.answer).replace(".", ",");
+      } else {
+        correctText = task.answer;
+      }
+
+      resultBox.innerHTML = [
+        '<div class="result-block ' + (correct ? "correct" : "wrong") + '">',
+          '<div class="verdict ' + (correct ? "correct" : "wrong") + '">' + (correct ? "✅ Правильно!" : "❌ Неправильно.") + '</div>',
+          '<div class="result-row"><strong>Твой ответ:</strong> ' + escapeHtml(raw) + '</div>',
+          '<div class="result-row"><strong>Правильный ответ:</strong> ' + escapeHtml(correctText) + '</div>',
+          '<div class="result-row"><strong>Пояснение:</strong> ' + escapeHtml(task.explanation) + '</div>',
+          '<div class="source-row"><strong>Источник:</strong> ' + escapeHtml(task.source) + '</div>',
+        '</div>'
+      ].join("");
+
+      updateStats();
+      updateSummary();
+    }
+
+    function chooseEssay(n, idx) {
+      const task = QUIZ.find(function (q) { return q.n === n; });
+      if (!task || task.type !== "essay" || savedAnswers[n]) return;
+
+      const option = task.options[idx];
+      savedAnswers[n] = { label: option.label, balls: option.balls };
+
+      const buttons = document.querySelectorAll("#options-" + n + " .option");
+      buttons.forEach(function (btn, i) {
+        btn.disabled = true;
+        if (i === idx) btn.classList.add("selected");
+      });
+
+      const resultBox = document.getElementById("result-" + n);
+      resultBox.innerHTML = [
+        '<div class="result-block neutral">',
+          '<div class="verdict neutral">📝 Самопроверка принята</div>',
+          '<div class="result-row"><strong>Твой статус:</strong> ' + escapeHtml(option.label) + '</div>',
+          '<div class="result-row"><strong>Баллов по самопроверке:</strong> ' + option.balls + ' / ' + task.maxBall + '</div>',
+          '<div class="result-row"><strong>Ориентир:</strong> ' + escapeHtml(task.explanation) + '</div>',
+          '<div class="source-row"><strong>Источник:</strong> ' + escapeHtml(task.source) + '</div>',
+        '</div>'
+      ].join("");
+
+      updateStats();
+      updateSummary();
+    }
+
+    function getStats() {
+      let answered = 0;
+      let autoCorrect = 0;
+      let autoScore = 0;
+      let autoMax = 0;
+      let essaySelfScore = 0;
+      let essayMax = 0;
+
+      QUIZ.forEach(function (task) {
+        const saved = savedAnswers[task.n];
+        if (saved) answered++;
+
+        if (task.type === "auto") {
+          const w = WEIGHTS[task.n] || 1;
+          autoMax += w;
+          if (saved && saved.correct) {
+            autoCorrect++;
+            autoScore += w;
+          }
+        } else {
+          essayMax += task.maxBall || 0;
+          if (saved) essaySelfScore += saved.balls || 0;
+        }
+      });
+
+      return {
+        total: TOTAL_TASKS,
+        answered: answered,
+        autoTotal: PART1_TASKS,
+        autoCorrect: autoCorrect,
+        autoScore: autoScore,
+        autoMax: autoMax,
+        essaySelfScore: essaySelfScore,
+        essayMax: essayMax
+      };
+    }
+
+    function getChecklistProgress() {
+      const inputs = document.querySelectorAll("#checklistUl input");
+      const total = inputs.length;
+      let done = 0;
+      inputs.forEach(function (input) { if (input.checked) done++; });
+      return total ? Math.round((done / total) * 100) : 0;
+    }
+
+    function updateStats() {
+      const s = getStats();
+      document.getElementById("answeredCount").textContent = s.answered + "/" + s.total;
+      document.getElementById("correctCount").textContent = s.autoCorrect + "/" + s.autoTotal;
+      document.getElementById("checklistProgress").textContent = getChecklistProgress() + "%";
+      document.getElementById("overall").value = Math.round(((s.answered / s.total) * 100 + getChecklistProgress()) / 2);
+    }
+
+    function updateSummary() {
+      const s = getStats();
+      const box = document.getElementById("summaryBox");
+
+      if (s.answered < s.total) {
+        box.innerHTML = [
+          '<div class="summary">',
+            '<p style="color:#9aa4c8;margin:0;">Пройдено блоков: <strong>' + s.answered + '</strong> из ' + s.total + '</p>',
+            '<p style="color:#9aa4c8;margin:8px 0 0 0;">Верных в части 1: <strong>' + s.autoCorrect + '</strong> из ' + s.autoTotal + '</p>',
+            '<p style="color:#9aa4c8;margin:8px 0 0 0;">Первичных баллов за часть 1: <strong>' + s.autoScore + '</strong> из ' + s.autoMax + '</p>',
+            '<p style="color:#9aa4c8;margin:8px 0 0 0;">Самопроверка части 2: <strong>' + s.essaySelfScore + '</strong> из ' + s.essayMax + '</p>',
+            '<p style="color:#9aa4c8;margin:8px 0 0 0;font-size:14px;">Ответь на все блоки, чтобы увидеть итог.</p>',
+          '</div>'
+        ].join("");
+        return;
+      }
+
+      const percent = s.autoMax ? Math.round((s.autoScore / s.autoMax) * 100) : 0;
+      let verdict = "";
+      if (percent >= 85) verdict = "Отличный результат! Часть 1 практически идеальна.";
+      else if (percent >= 60) verdict = "Хорошо, но разбери ошибки по части 1.";
+      else verdict = "Нужно плотно проработать базу: формулы, единицы измерения, графики и типичные ловушки.";
+
+      box.innerHTML = [
+        '<div class="summary">',
+          '<div class="score">' + s.autoScore + '/' + s.autoMax + '</div>',
+          '<p style="margin:8px 0;">' + escapeHtml(verdict) + '</p>',
+          '<p style="color:#9aa4c8;margin:0;">Правильность части 1: ' + percent + '%</p>',
+          '<p style="color:#9aa4c8;margin:8px 0 0 0;">Самопроверка части 2: <strong>' + s.essaySelfScore + '</strong> из ' + s.essayMax + ' баллов</p>',
+          '<p class="note" style="margin-top:10px;">Часть 2 оценивается экспертами. Это твоя честная самооценка по критериям ФИПИ.</p>',
+        '</div>'
+      ].join("");
+    }
+
+    function resetAll() {
+      if (!confirm("Сбросить все ответы и чек-лист?")) return;
+      savedAnswers = {};
+      checklistState = {};
+      renderChecklist();
+      renderPlan();
+      renderQuiz();
+    }
+
+    function copyPhone() {
+      const phone = "89202275676";
+      const status = document.getElementById("copyStatus");
+      const showCopied = function () {
+        status.textContent = "✓ Скопировано";
+        setTimeout(function () { status.textContent = ""; }, 2500);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(phone).then(showCopied).catch(function () {
+          fallbackCopy(phone, showCopied);
+        });
+      } else {
+        fallbackCopy(phone, showCopied);
+      }
+    }
+
+    function fallbackCopy(text, callback) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try { document.execCommand("copy"); callback(); }
+      catch (e) { alert("Не удалось скопировать автоматически. Номер: " + text); }
+      document.body.removeChild(textarea);
+    }
+
+    // ============================================================
+    // ТАЙМЕР
+    // ============================================================
+    let timerTotal = 235 * 60;
+    let timerRemaining = timerTotal;
+    let timerInterval = null;
+    let timerRunning = false;
+
+    function formatTime(sec) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      return [h, m, s].map(function (v) { return String(v).padStart(2, "0"); }).join(":");
+    }
+
+    function updateTimerDisplay() {
+      const display = document.getElementById("timerDisplay");
+      const widget = document.getElementById("timerWidget");
+      display.textContent = formatTime(timerRemaining);
+      widget.classList.toggle("warning", timerRemaining <= 300 && timerRemaining > 60);
+      widget.classList.toggle("danger", timerRemaining <= 60);
+    }
+
+    function updateTimerButton() {
+      const btn = document.getElementById("timerToggle");
+      btn.textContent = timerRunning ? "⏸" : "▶";
+    }
+
+    function stopTimer() {
+      timerRunning = false;
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      updateTimerButton();
+    }
+
+    function startTimer() {
+      if (timerRunning || timerRemaining <= 0) return;
+      timerRunning = true;
+      timerInterval = setInterval(function () {
+        if (timerRemaining > 0) {
+          timerRemaining--;
+          updateTimerDisplay();
+        }
+        if (timerRemaining === 0) {
+          stopTimer();
+          alert("Время вышло!");
+        }
+      }, 1000);
+      updateTimerButton();
+    }
+
+    function toggleTimer() {
+      if (timerRunning) stopTimer();
+      else startTimer();
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timerRemaining = timerTotal;
+      updateTimerDisplay();
+    }
+
+    function updateTimerLabels() {
+      const preset = document.getElementById("timerPreset");
+      const presets = [
+        { seconds: 235 * 60, label: "Физика ЕГЭ — 235 мин" },
+        { seconds: 60 * 60, label: "Тренировка — 60 мин" },
+        { seconds: 30 * 60, label: "Спринт — 30 мин" }
+      ];
+      preset.innerHTML = presets.map(function (p) {
+        return '<option value="' + p.seconds + '">' + escapeHtml(p.label) + '</option>';
+      }).join("");
+      preset.value = String(235 * 60);
+      timerTotal = 235 * 60;
+      timerRemaining = timerTotal;
+      updateTimerButton();
+      updateTimerDisplay();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      renderChecklist();
+      renderPlan();
+      renderQuiz();
+      updateTimerLabels();
+      updateTimerDisplay();
+
+      document.getElementById("timerToggle").addEventListener("click", toggleTimer);
+      document.getElementById("timerReset").addEventListener("click", resetTimer);
+
+      document.getElementById("timerPreset").addEventListener("change", function (e) {
+        timerTotal = parseInt(e.target.value, 10);
+        resetTimer();
+      });
+
+      document.getElementById("checklistUl").addEventListener("change", function (e) {
+        if (e.target.matches("input[type='checkbox']")) {
+          const key = e.target.dataset.key;
+          checklistState[key] = e.target.checked;
+          const li = e.target.closest(".check-item");
+          if (li) li.classList.toggle("done", e.target.checked);
+          updateStats();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+        const active = document.activeElement;
+        if (!active || !active.classList.contains("answer-input")) return;
+        const match = active.id.match(/^input-(\d+)$/);
+        if (match) checkAuto(parseInt(match[1], 10));
+      });
+    });
+  </script>
+</body>
+</html>
